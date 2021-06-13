@@ -7,21 +7,22 @@ import {login} from "../actions/auth";
 class Login extends React.Component {
   constructor(){
     super();
-    this.state={
-        emailId:'',
-        password:''
-    }
+    this.state="";
 
     this.handleSubmitLogin = this.handleSubmitLogin.bind(this);
+    this.handleInput = this.handleInput.bind(this);
   }
+
+  handleInput = (event) => {
+    const { name, value } = event.target;
+    console.log("name..", name);
+    console.log("value", value);
+    this.setState(this.state.userName)
+  };
 
   handleSubmitLogin = async (event) =>{
   event.preventDefault();
-  
-  const loginUser = this.state;
-
-  console.log("props....",this.props);
-  this.props.login(loginUser);
+  this.props.login(this.state);
 }
   render(){
       return (
@@ -29,10 +30,10 @@ class Login extends React.Component {
       <LoginTitle>Login to LMS</LoginTitle>
       <LoginBlock>
         <div className="formGroup">
-          <Input type="text" placeholder="Enter user name" name="userName" value={this.state.emailId}/>
+          <Input type="text" placeholder="Enter user name" name="userName" value={this.state.userName} onChange={this.handleInput}/>
         </div>
         <div className="formGroup">
-          <Input type="password" placeholder="Enter password" name="password" value={this.state.password}/>
+          <Input type="password" placeholder="Enter password" name="password" value={this.state.password} onChange={this.handleInput}/>
         </div>
         <div className="buttonDiv">
           <Link to="/register">Register</Link>
@@ -83,7 +84,7 @@ const LoginTitle = styled.h2`
 
 const mapDispatchToProps = (dispatch) => {
     return {
-         login: (user) => dispatch(login(user))
+         login: (authData) => dispatch(login(authData))
         }
     }
 

@@ -8,10 +8,7 @@ const API_URL = "http://localhost:5000/lms/";
 
  const login = (loginUser) => {
   return axios
-    .post(API_URL + "login", loginUser)
-    .then((response) => {
-      return response.data;
-    });
+    .post(API_URL + "login", loginUser);
 };
 
 const AuthService = { register, login };

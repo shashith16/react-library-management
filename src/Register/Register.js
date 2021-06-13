@@ -73,15 +73,19 @@ handleSubmit = async (event) =>{
   const user = this.state;
   const isValid = this.validateRegister();
   console.log("isValid..",isValid);
-
-  console.log("props....",this.props);
-  this.props.register(user);
-}
-if (isValid) {
-    debugger;
-    return <Redirect to="/userProfile" />;
+  if (isValid) {
+    const resReg = this.props.register(user);
   }
+  
+}
+
+
+
 render(){
+  console.log("props are ..",this.props)
+   if(this.props.success){
+     return <Redirect to="/userProfile" />
+   }
   return (
     <RegBlock>
       <RegisterTitle>Register to LMS</RegisterTitle>
@@ -151,9 +155,9 @@ render(){
           <Link to="/login">Login</Link>
           <Button type="button" onClick={this.handleSubmit}>Register</Button>
         </div>
-         {Object.keys(this.state.errors).map((key)=>{
+         {/* {Object.keys(this.state.errors).map((key)=>{
             return <div key={key}>{this.state.errors[key]}</div>
-        })} 
+        })}  */}
       </RegisterForm>
     </RegBlock>
   )
@@ -196,6 +200,13 @@ const RegisterTitle = styled.h2`
   justify-content: center;
 `;
 
+const mapStateToProps = (state) => {
+  console.log("map state..",state);
+  const {registerResponse} = state.authReducer;
+  console.log("registerResponse..",registerResponse)
+  return registerResponse;
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
          register: (user) => dispatch(register(user))
@@ -203,4 +214,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 
 
-export default connect(null, mapDispatchToProps)(Register);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

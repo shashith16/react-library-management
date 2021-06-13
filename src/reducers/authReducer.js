@@ -7,12 +7,12 @@ import {
   LOGIN_ERROR,
 } from "../actions/types";
 const InitialState = {
-  registerData: [],
-  registerDataError: null,
-  loginData: [],
-  isLoggedIn: false,
+  registerResponse: null,
+  registerLoading: false,
+  loginResponse: null,
   loginLoading: false,
-  loginDataError: null,
+  isLoggedIn: false,
+  
 };
 
 function authReducer(state = InitialState, action) {
@@ -22,27 +22,35 @@ function authReducer(state = InitialState, action) {
     case REGISTER_REQUEST: {
       return {
         ...state,
+        registerResponse: null,
+        registerLoading: true,
       };
     }
     case REGISTER_SUCCESS: {
-      return { ...state, registerData: payload };
+      return {
+        ...state,
+        registerLoading: false,
+        registerResponse: payload,
+      };
     }
     case REGISTER_ERROR: {
-      return { ...state, registerDataError: payload };
+      return {
+        ...state,
+        registerLoading: false,
+      };
     }
     case LOGIN_REQUEST: {
       return {
         ...state,
         isLoggedIn: false,
         loginLoading: true,
-        loginDataError: null,
-        loginData: null,
+        loginResponse: null,
       };
     }
     case LOGIN_SUCCESS: {
       return {
         ...state,
-        loginData: payload,
+        loginResponse: payload,
         loginLoading: false,
         isLoggedIn: true,
       };
@@ -50,9 +58,8 @@ function authReducer(state = InitialState, action) {
     case LOGIN_ERROR: {
       return {
         ...state,
-        loginDataError: payload,
-        loginData: null,
         isLoggedIn: false,
+        loginLoading: false,
       };
     }
     default:
